@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<title>Demand Forecasting</title>
+	<link rel="stylesheet" href="./css/bootstrap-3.3.5.min.css" >
+    <link rel="stylesheet" type="text/css" href="./css/myStyle.css">
+	<link rel="shortcut icon" href="./images/df.png" />
+	<link rel="stylesheet" href="./css/font-4.7.0.min.css">
+	<link rel="stylesheet" href="./js/excel-like-filter/excel-bootstrap-table-filter-style.css" />
+</head>
+
+<body >
+
+<nav class="nav navbar navbar-fixed-top" style="padding-top:10px;padding-bottom:10px;background-color:rgba(12, 28, 36, 0.938);">
+
+	<img src="https://dminc.com/wp-content/uploads/2019/12/favicon.ico" class="ipt-2" alt="DMI" style="max-width: 50%; height: 50px; "/>
+	<span style="color: white;font-size: 2.7em;margin-left: 1%; vertical-align: top;">DMI</span>
+		
+	<span class="pull-right" style="color: rgba(250, 235, 25, 0.897);font-size: 2.5em">Demand Forecasting&nbsp;&nbsp;</span>
+</nav>
+
+<br>
+<br>
+<br>
+
+		  
+<div class="clearfix col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
+	<br><br>
+    <ul class=" nav nav-tabs float-left menuTab nav-bgrnd nav-css" id="myTab" role="tablist" style="padding: 4px;">
+		<li class="nav-item active">
+			<a class="font-weight-bold nav-link" id="preview-tab" data-toggle="tab" href="#preview" role="tab" aria-controls="preview" aria-selected="true" aria-expanded="true" style="border-radius: 20px;">Data Preview</a>
+		</li>
+
+		<li class="nav-item ">
+			<a class="font-weight-bold nav-link" id="data-exploration-tab" data-toggle="tab" href="#dataExploration" role="tab" aria-controls="dataExploration" aria-selected="false" aria-expanded="false" style="border-radius: 20px;">Data Exploration</a>
+		</li>
+		
+		<li class="nav-item ">
+			<a class="font-weight-bold nav-link" id="feature-importance-tab" data-toggle="tab" href="#featureImportance" role="tab" aria-controls="featureImportance" aria-selected="false" aria-expanded="false" style="border-radius: 20px;">Feature Importance</a>
+		</li>
+		
+		<li class="nav-item ">
+			<a class="font-weight-bold nav-link" id="prediction-tab" data-toggle="tab" href="#prediction" role="tab" aria-controls="prediction" aria-selected="false" aria-expanded="false" style="border-radius: 20px;">Prediction</a>
+		</li>
+    </ul>
+</div>
+
+
+<div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 tab-content bg-white py-5">
+	<div id="preview" class="tab-pane fade in active" role="tabpanel" aria-labelledby="preview-tab">
+		<br /><br />
+		<div class="row">
+			<div class="jumbotron col-md-6 col-md-offset-3 col-sm-6 col-sm-offset-3 border">
+				<div class="form-group-lg">
+				  <form id="upload-file" method="post" enctype="multipart/form-data">
+					  <input type="file" class="file" name="file" id="fileBrowseInput">
+					  <div class="input-group input-group-sm">
+						<span class="input-group-addon"><i class="glyphicon glyphicon-file"></i></span>
+						<input type="text" class="form-control" placeholder="Upload File" disabled>
+						<span class="input-group-btn">
+						  <button class="btn" id="fileBrowse" type="button" ><i class="glyphicon glyphicon-search"></i> Browse File</button>
+						 <button type="button" class="btn" id ="buttonPreview" style="margin-left:4%; border-radius: 20px;" disabled>Preview Data</button>
+						</span>
+					  </div>
+				  </form>
+				</div>
+			  </div>
+		</div>
+			
+		<div class="row">
+			<img id="loader" class="img-responsive center-block" src="./images/spinner.gif" style="height: 45px; margin-top: 7%;"/><br>
+			<div class="col-md-10 col-md-offset-1 col-sm-10 col-sm-offset-1" id="divTablePreview">
+				<br> <br>
+				<div class="card">
+					<table class="table table-responsive table-hover" id="tablePreview">
+				
+						<thead id="tablePreviewHeader">	
+						</thead>
+						
+						<tbody id="tablePreviewBody">	 
+						</tbody>
+					
+					</table>
+				</div>
+				<br>
+			</div>
+		</div>
+    </div>
+	
+	<!-- <div id="myModal" class="modal fade" role="dialog">
+		<div class="modal-dialog modal-lg">
+			<div class="modal-content">					
+				<div class="modal-header">
+					<button type="button" class="btn pull-right" data-dismiss="modal" style="color:white; background-color:white;"><img src="/images/wrong_mark.png" style="width: 25px; height: 25px;"/></button>
+				</div>
+				<div class="modal-body">
+					<img class="img-responsive " src="" />
+				</div>
+			</div>
+		</div>
+	</div> -->
+		
+	<div id="dataExploration" class="tab-pane fade tab-content" role="tabpanel" aria-labelledby="data-exploration-tab">
+		<ul class=" nav nav-tabs float-left" id="dataExploreTab" role="tablist" style="padding: 10px;">
+			<li class="nav-item  active">
+				<a class="font-weight-bold nav-link" id="univariate-tab" data-toggle="tab" href="#univariate" role="tab" aria-controls="univariate" aria-selected="true" aria-expanded="true" style="border-radius: 20px;">Univariate Analysis</a>
+			</li>
+
+			<li class="nav-item ">
+				<a class="font-weight-bold nav-link " id="bivariate-tab" data-toggle="tab" href="#bivariate" role="tab" aria-controls="bivariate" aria-selected="false" aria-expanded="false" style="border-radius: 20px;">Bivariate Analysis</a>
+			</li>
+			
+			<li class="nav-item ">
+				<a class="font-weight-bold nav-link" id="multivariate-tab" data-toggle="tab" href="#multivariate" role="tab" aria-controls="multivariate" aria-selected="false" aria-expanded="false" style="border-radius: 20px;">Multivariate Analysis</a>
+			</li>
+		</ul>
+		
+		
+		<div id = "univariate" class="tab-pane fade in active" role="tabpanel" aria-labelledby="univariate-tab">
+			<br><br>			
+			<div class = "overflowDiv">
+				<br>
+				<div class="row">
+					<div class="col-md-10">
+						<label class="text-warning fa fa-2x" >Avg. sales per Item</label>
+						<img src="./images/Univariate/avg_sales_per_item.png" class="img-responsive img-rounded" />
+						<h4 class="text-left bg-warning" style="padding: 12px 12px;"> 🎯 Top items with highest average sale are <b>15, 28, 13, 18</b> and with least average sales are <b>5, 1, 41</b> and so on.</h4>
+					</div>
+				</div>
+				<br>
+				<div class="row">
+					<div class="col-md-10">
+						<label class="text-warning fa fa-2x" >Avg. sales per Store</label>
+						<!-- <img src="/images/Univariate/avg_sales_per_store.png" class="img-responsive img-rounded" /> -->
+						<img src="./images/Univariate/avg_sales_per_store_bar_chart.jpeg" class="img-responsive img-rounded" />
+						<h4 class="text-left bg-warning" style="padding: 12px 12px;">✴️ From the data, it is clear that the stores with <b>ID 2 and 8</b> have higher average sales than the remaining stores and is a clear indication that they are doing good money! <br>
+							✴️ Whereas store with <b>ID 7</b> has very poor performance in terms of average sales.</h4>
+					</div>
+				</div>
+			</div>	
+				
+		</div>
+		
+
+		<div id="bivariate" class="tab-pane fade" role="tabpanel" aria-labelledby="bivariate-tab">
+			<br>
+			<div class = "overflowDiv">
+				<div class="row">
+					<div class="col-md-10">
+						<label class="text-warning fa fa-2x" >Store- 1 and Item- Brown Rice & Lentils</label>
+						<img src="./images/Bivariate/store1_brownRice.png" class="img-responsive img-rounded" />
+						<h4 class="text-left bg-warning" style="padding: 12px 12px;">✴️ From the data, it can be seen that the sales of Brown Rice
+							& Lentils for the year 2013 is less during August to December.</h4>
+					</div>
+				</div>
+				<br>
+				<div class="row">
+					<div class="col-md-10">
+						<label class="text-warning fa fa-2x" >Store- 1 and different items of same store - sales plot</label>
+						<img src="./images/Bivariate/store_item_sales.png" class="img-responsive img-rounded" />
+						
+					</div>
+				</div>
+				<br>
+				<div class="row">
+					<div class="col-md-10">
+						<label class="text-warning fa fa-2x">Store- 3 and Item- rolls/buns sales plot</label>
+						<!-- <img src="/images/Bivariate/store3_item6.png" class="img-responsive img-rounded" /> -->
+						<img src="./images/Bivariate/store3_item6.png" class="img-responsive img-rounded" />
+					</div>
+				</div>			
+			</div>
+		</div>
+		
+		<div id="multivariate" class="tab-pane fade" role="tabpanel" aria-labelledby="multivariate-tab">
+			<br>
+			<div class = "overflowDiv">
+				<!-- <label>Multivariate data distrbution</label> -->
+				<br>
+				<div class="row">
+					<!-- <div class="col-md-10"><img src="/images/Multivariate/store_vs_sales.png" class="img-responsive" data-toggle="modal" data-target="#myModal"/></div> -->
+					
+					<div class="col-md-10">
+						<label class="text-warning fa fa-2x">Sales per Store per Year</label>
+						<img src="./images/Multivariate/store_vs_sales.png" class="img-responsive" />
+						<h4 class="text-left bg-warning" style="padding: 12px 12px;">✴️ From the data, it can be seen that the sales of store 
+							is increasing on annual basis.</h4>
+					</div>
+				</div>
+				<br><br>				
+			</div>
+		</div>	
+		
+    </div>
+	
+	<div id="featureImportance" class="tab-pane fade tab-content" role="tabpanel" aria-labelledby="feature-importance-tab">
+		
+		<div id = "featImp" class="tab-pane fade in active" role="tabpanel" aria-labelledby="lasso-tab">
+			<br>
+			<div class = "overflowDiv">
+				<label>Feature Importance</label>
+				<br><br>
+				<div class="row">
+					<div class="col-md-12">
+						<img src="./images/FeatureImportance/feat_imp.png" class="img-responsive"/>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+		
+	<div id="prediction" class="tab-pane fade tab-content" role="tabpanel" aria-labelledby="prediction-tab">
+		<br /><br />
+		<div class="row">
+			<div class="jumbotron col-md-6 col-md-offset-3 col-sm-6 col-sm-offset-3 border">
+				<div class="form-group-lg">
+					<form id="predict-file" method="post" enctype="multipart/form-data">
+						<input type="file" class="filePredict" name="file" id="fileBrowsePredict">
+						<div class="input-group input-group-sm">
+						<span class="input-group-addon"><i class="glyphicon glyphicon-file"></i></span>
+						<input type="text" class="form-control " disabled placeholder="Upload File">
+						<span class="input-group-btn">
+							<button class="btn" id="browsePrediction" type="button" ><i class="glyphicon glyphicon-search"></i> Browse File</button>
+						<button type="button" class="btn" id ="buttonPrediction" disabled>Predict Result</button>
+						</span>
+						</div>
+					</form>
+						
+				</div>
+			</div>
+		</div>	
+		
+		
+		
+		<div class = "row">
+			<img id="loader_predict" class="img-responsive center-block" src="./images/spinner.gif" style="height: 45px; margin-top: 7%;"/>
+		
+			<div class="col-md-10 col-md-offset-1 col-sm-10 col-sm-offset-1" id="divTablePredict">
+				<br> <br>
+				<div class="card">
+		
+					<table class="table table-responsive table-hover" id="tablePredict">
+					
+						<thead id="tablePredictHeader">
+						</thead>
+						
+						<tbody id="tablePredictBody"> 
+						</tbody>
+						
+					</table>
+
+					<button type="button" class="btn pull-right" id ="buttonDownloadPredictedCSV">Download Forecasts</button>
+
+				</div>
+			</div>
+		</div>
+
+		<div class="row">
+			<br><br>
+			<div class="col-md-8 col-md-offset-3 col-sm-8 col-sm-offset-3">
+				<div id="form-box" class="card" style="user-select: auto;">
+					<label for="heading" class="text-muted" style="user-select: auto; font-size: 1.3em;">Filter Results</label><br><br>
+					<form id="filter-result" method="POST" enctype="multipart/form-data" style="user-select: auto;">
+						<div class="form-group col-md-3 col-sm-3" style="user-select: auto;">
+							<label for="date" style="user-select: auto;">Date: </label>
+							<!-- <input type="text" class="form-control" id="dateInput" name="date" style="user-select: auto;"> -->
+							<select name="date" id="dateInput" style="width: 120px;
+							outline: none;
+							border: 1px solid #fff;
+							padding: 0.5rem;
+							font-size: 1.4rem;
+							border-radius: 0.7rem;
+							box-shadow: 0 1px 4px rgb(146 161 176 / 15%);
+							cursor: pointer;">
+								<option disabled selected>Select date from</option>
+								<option value="01-01-2023">01-01-2023</option>
+							  </select>
+						</div>
+						<div class="form-group col-md-3 col-sm-3" style="user-select: auto;">
+							<label for="item" style="user-select: auto;">Item: </label>
+							<!-- <input type="text" class="form-control" id="itemInput" name="item" style="user-select: auto;"> -->
+							<select name="item" id="dateInput" style="width: 120px;
+							outline: none;
+							border: 1px solid #fff;
+							padding: 0.5rem;
+							font-size: 1.4rem;
+							border-radius: 0.7rem;
+							box-shadow: 0 1px 4px rgb(146 161 176 / 15%);
+							cursor: pointer;">
+								<option disabled selected>Select item</option>
+								<option value="Moisturizing Cold Cream">Moisturizing Cold Cream</option>
+								<option value="cold drinks">Cold Drinks</option>
+								<option value="Air Conditioner">Air Conditioner</option>
+								<option value="Brown Rice & Lentils">Brown Rice & Lentils</option>
+							  </select>
+						</div>
+						<div class="form-group col-md-3 col-sm-3" style="user-select: auto;">
+							<label for="store" style="user-select: auto;">Store: </label>
+							<!-- <input type="text" class="form-control" id="storeInput" name="store" style="user-select: auto;"> -->
+							<select name="store" id="storeInput" style="width: 120px;
+							outline: none;
+							border: 1px solid #fff;
+							padding: 0.5rem;
+							font-size: 1.4rem;
+							border-radius: 0.7rem;
+							box-shadow: 0 1px 4px rgb(146 161 176 / 15%);
+							cursor: pointer;">
+								<option disabled selected>Select store</option>
+								<option value="store_1">Store 1</option>
+								<option value="store_2">Store 2</option>
+								<option value="store_3">Store 3</option>
+								<option value="store_4">Store 4</option>
+							  </select>
+						</div>
+						<div class="button-group col-md-3" style="user-select: auto; padding-top: 3%;">
+							<button id="btnSend" type="button" class="btn pull-right" style="user-select: auto;">Send</button>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+
+		<div class = "row">
+			<img id="loader_filter" class="img-responsive center-block" src="./images/spinner.gif" style="height: 45px; margin-top: 7%;"/>
+		
+			<div class="col-md-10 col-md-offset-1 col-sm-10 col-sm-offset-1" id="divTableFilter">
+				<br> <br>
+				<div class="card">
+		
+					<table class="table table-responsive table-hover" id="tableFilter">
+					
+						<thead id="tableFilterHeader">
+						</thead>
+						
+						<tbody id="tableFilterBody"> 
+						</tbody>
+						
+					</table>
+
+				</div>
+			</div>
+		</div>
+
+		<div class="row">
+			<div class="col-md-10 col-md-offset-1 col-sm-10 col-sm-offset-1">
+				<div class="card" id="displayPredictPlot">
+				</div>
+				<br><br>
+			</div>
+		</div>
+
+
+	</div>
+		
+	</div>
+
+	<script type="text/javascript" src="./js/jquery-1.9.1.min.js"></script>
+    <script src="./js/bootstrap-3.3.5.min.js" ></script>
+    <script src="./js/jquery-csv-1.0.5.js"></script>
+	<script src="./js/excel-like-filter/excel-bootstrap-table-filter-bundle.js"></script>
+	<script src="./js/myScript.js"></script>
+
+</body>
+
+</html>	
+    
+    
+    
+    
