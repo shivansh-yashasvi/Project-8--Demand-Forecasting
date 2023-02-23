@@ -159,11 +159,6 @@ To have a general understanding, it will be beneficial to inspect the inner stru
 * $\sqrt{3x-1}+(1+x)^2$
 
 
-
-## Experimental Results
-
-TODO TODO TODO
-
 ## References
 
 <a id="cho-2014-a"></a> 
@@ -182,16 +177,6 @@ arXiv:1406.1078
 Dupond, S. (2019),
 _A thorough review on the current advance of neural network structures,_
 Annual Reviews in Control, 14, 200-230
-
-<a id="epias-2022"></a> 
-EXIST / EPIAS. (2022), 
-_EXIST Transparency Platform,_
-https://seffaflik.epias.com.tr/transparency/
-
-<a id="erisen-2013"></a> 
-Erişen, E. (2013), 
-_On the Parametric and Non-Parametric Prediction Methods for Electricity Load Forecasting,_ 
-M.Sc. Thesis, Middle East Technical University
 
 <a id="hochreiter-schmidhuber-1997"></a>
 Hochreiter, S., & Schmidhuber, J. (1997),
