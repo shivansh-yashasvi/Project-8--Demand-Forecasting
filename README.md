@@ -4,20 +4,13 @@
 * [Data Analysis](#data-analysis)
   - [Examination of Covid-19 Impact](#examination-of-covid-19-impact)
   - [Examination of Schools' Impact](#examination-of-schools-impact)
-  - [Examination of Ramazan Impact](#examination-of-ramazan-impact)
   - [Extracted Features and Data Pre-Processing](#extracted-features-and-data-pre-processing)
 * [Forecasting Algorithms](#forecasting-algorithms)
-* [Experimental Results](#experimental-results)
 
 ## Introduction
 In the rapidly developing world, energy needs are increasing at the same pace. Since the industrial revolution, countries with access to energy resources have come to economically strong positions. On the other hand, the ever-increasing macro-economic and micro-economic competition between different entities is forcing the absolute need for efficient energy use in order to achieve economic efficacy and/or efficiency.
 
-On the other hand, the global sustainable growth need has brought new opportunities and challenges hand-in-hand. Regulatory bodies have been forcing economic entities to use green energy sources more than non-green ones. Additionally, economic entities are encouraged to use green energy sources more efficiently.
 Electricity, being relatively easy to transmit, has had ever-increasing use globally. Switching the electricity production mainly from non-green to green processes increases its potential for sustainability-oriented development. On the other hand, the relative inefficiency and higher cost of storing electrical energy make the instant balancing of demand and supply extremely important. 
-
-On the other hand, an electricity producer who has to give hourly offers on the supply side in the Day-Ahead Market is primarily interested in the hourly forecasts for the next 24 hours. Similar models (if not the same) can be utilized for applications in these different time horizons with training with appropriate data.
-
-Spot markets are divided into two; Day-Ahead Market (DAM) and Intra-Day Market (IDM). The DAM is the market where the electricity price for each hour of the next day is determined by auction and has a larger transaction volume. On the other hand, IDM enables the participants to change their position in the Day-Ahead Market for a certain amount of time before electricity is physically transmitted. Any imbalance in the electricity grid caused by a mismatch of demand and supply is compensated after the closure of the IDM. Hence, having precise demand forecasts will provide high value to all parties in the electricity market.
 
 This project proposes an algorithm and implementation for forecasting hourly demand in the next 24-hour time frame. The forecasting system can be utilized by market players on the supply side and the regulatory bodies most interested in balancing the supply and demand. The system is trained and tested on Indian electricity market data and hence, very few features are special to India. Nevertheless the system can be utilized in any electricity market with minimal modifications (and re-training).
 
@@ -58,14 +51,6 @@ One other interesting question to examine is whether schools have a significant 
 ![schools-impact](./images/schools-impact.png)
 
 Having a careful look at the above figure reveals an interesting relationship between school closure dates and electricity consumption. It is evident that electricity consumption generally is higher when the schools are closed. This can easily be explained by the fact that most of the school closures happen in summer when electricity consumption increases due to cooling needs. Although there is only a correlation but no causation relationship between schools and electricity consumption, this is most of the time more than enough for a machine learning algorithm which is the backbone of forecasting.
-
-### Examination of Ramazan Impact
-
-Another interesting question to analyze is whether Ramazan has a significant impact on electricity consumption. For this analysis, the following figure presents the 7-day average of daily electricity consumption separately for each year. Days falling in Ramazan are indicated with a marker (*).
-
-![ramazan-impact](./images/ramazan-impact.png)
-
-This is not an easy question to answer with only 6 years of data because Ramazan is sliding backward by 10-11 days every year. According to the above figure, electricity consumption increases throughout Ramazan and makes a peak just before Ramazan Feast in 2017, 2018, 2019, and 2020. On the other hand, this behavior is not observed during Ramazan in 2021 and 2022. It is not very easy to separate whether this behavior depends on Ramazan's sliding characteristic or is just a coincidence. More data should be examined to find a statistically significant answer.
 
 ### Extracted Features and Data Pre-Processing
 
@@ -137,17 +122,17 @@ Sine and cosine transforms are applied for the features week_day, month, day, ho
 
 ## Forecasting Algorithms
 
-Taking an ordered set of input samples and generating an ordered set of outputs is defined as sequence-to-sequence learning in the field of machine learning ([Sutskever, 2014](#sutskever-2014)) and has long been known, especially in natural language processing (NLP) domain ([Cho, 2014-a](#cho-2014-a), [Cho, 2014-b](#cho-2014-b)). In recent years, there have been some studies that apply sequence-to-sequence learning to solve multi-step forecasting problems in time-series data ([Phandoidaen & Richter, 2020](#phandoidaen-2020)). 
+Taking an ordered set of input samples and generating an ordered set of outputs is defined as sequence-to-sequence learning in the field of machine learning and has long been known, especially in natural language processing (NLP) domain). In recent years, there have been some studies that apply sequence-to-sequence learning to solve multi-step forecasting problems in time-series data. 
 
 Sequence-to-sequence learning methods are studied in this project due to their superiority in multi-step forecasting problems.
 
 ### Encoder-Decoder Architecture
 
-The general architecture of an encoder-decoder system can be viewed in the following figure ([Kumaran, 2020](#kumaran-2020)). 
+The general architecture of an encoder-decoder system can be viewed in the following figure). 
 
 ![encoder-decoder](https://miro.medium.com/max/700/1*62xsdc5F5DNdLXluQojeBg.png)
 
-One important point to note is that this drawing is a “time-unrolled” scheme, meaning that there is only one GRU Cell in the Encoder and there is only one Decoder Cell in the Decoder. The GRU Cell and the Decoder Cell carries “hidden state” information from the previous time instant to the next. The advantage of using time-unrolled drawing in architectures that include recurrent neural networks (RNN) is that it improves understanding of the logic behind training. Encoder-Decoder architectures can be implemented with vanilla RNNs ([Dupond, 2019](#dupond-2019)), Gated Recurrent Units (GRU) ([Cho, 2014-b](#cho-2014-b)) or Long Short-Term Memory RNNs (LSTM) ([Hochreiter & Schmidhuber, 1997](#hochreiter-schmidhuber-1997)).
+One important point to note is that this drawing is a “time-unrolled” scheme, meaning that there is only one GRU Cell in the Encoder and there is only one Decoder Cell in the Decoder. The GRU Cell and the Decoder Cell carries “hidden state” information from the previous time instant to the next. The advantage of using time-unrolled drawing in architectures that include recurrent neural networks (RNN) is that it improves understanding of the logic behind training. Encoder-Decoder architectures can be implemented with vanilla RNNs), Gated Recurrent Units (GRU) or Long Short-Term Memory RNNs (LSTM).
 
 To have a general understanding, it will be beneficial to inspect the inner structure of vanilla RNN.
 
@@ -155,42 +140,6 @@ To have a general understanding, it will be beneficial to inspect the inner stru
 * $\sqrt{3x-1}+(1+x)^2$
 
 
-## References
 
-<a id="cho-2014-a"></a> 
-Cho, K., van Merrienboer, B., Bahdanau, D., & Bengio, Y. (2014), 
-_On the Properties of Neural Machine Translation: Encoder-Decoder Approaches,_
-Eighth Workshop on Syntax, Semantics and Structure in Statistical Translation (SSST-8),
-arXiv:1409.1259
 
-<a id="cho-2014-b"></a>
-Cho, K., van Merrienboer, B., Gulcehre, C., Bahdanau, D., Bougares, F., Schwenk, H., & Bengio, Y. (2014),
-_Learning Phrase Representations using RNN Encoder-Decoder for Statistical Machine Translation,_
-Proceedings of the 2021 Conference on Empirical Methods in Natural Language Processing (EMNLP),
-arXiv:1406.1078
-
-<a id="dupond-2019"></a>
-Dupond, S. (2019),
-_A thorough review on the current advance of neural network structures,_
-Annual Reviews in Control, 14, 200-230
-
-<a id="hochreiter-schmidhuber-1997"></a>
-Hochreiter, S., & Schmidhuber, J. (1997),
-_Long Short-term Memory,_
-Neural Computation, 9(8), 1735-80
-
-<a id="kumaran-2020"></a>
-Kumaran, G. (2020, June 9),
-_Encoder-Decoder Model for Multistep Time Series Forecasting Using PyTorch,_
-Towards Data Science ([link to the article](https://towardsdatascience.com/encoder-decoder-model-for-multistep-time-series-forecasting-using-pytorch-5d54c6af6e60))
-
-<a id="phandoidaen-2020"></a>
-Phandoidaen, N., Richter, S. (2020),
-_Forecasting time series with encoder-decoder neural networks,_
-arXiv:2009.08848
-
-<a id="sutskever-2014"></a>
-Sutskever, I., Vinyals, O., & Le, Q. V. (2014),
-_Sequence to Sequence Learning with Neural Networks,_
-Proceedings of the International Conference on Neural Information Processing Systems, 2, 3104-3112
 
