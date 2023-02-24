@@ -96,8 +96,6 @@ The following features are extracted for each data sample:
   - 1 if the day of the sample is a bridge day
   - 0 else
 
-The interested reader can consult ([Erişen, 2013](#erisen-2013)) for more details on feature extraction.
-
 The whole data set is split as follows:
 
 * __train set:__ [2017-01-01, 2021-12-31]
