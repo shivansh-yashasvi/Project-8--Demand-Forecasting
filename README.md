@@ -16,7 +16,7 @@ This project proposes an algorithm and implementation for forecasting hourly dem
 
 ## Data Analysis
 
-Data used in this project is obtained from the official website of Energy Exchange Indian State Team (EXIST).
+Data used in this project is obtained from Kaggle.
 
 Hourly electricity demand data between 2017-01-01 and 2022-06-30 are utilized in this study. For a visual introduction, the following figure presents the hourly electricity consumption in India between 2022-04-01 and 2022-06-30.
 
