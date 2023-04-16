@@ -22,7 +22,7 @@ Hourly electricity demand data between 2017-01-01 and 2022-06-30 are utilized in
 
 ![hourly_2022-04-01_2022-06-30](./images/hourly_2022-04-01_2022-06-30.png)
 
-As seen in the above figure, the electricity consumption shows regular patterns, higher during business days than weekend days. The sharp drop at the beginning of May reflects the lower electricity usage during the Ramazan Feast.
+As seen in the above figure, the electricity consumption shows regular patterns, higher during business days than weekend days. The sharp drop at the beginning of May reflects the lower electricity usage during the onset of Monsoon season which causes electricity cuts in households and slowdown of businesses and industries.
 
 The daily pattern in demand (in MWh) can be seen in the following figure.
 
@@ -83,8 +83,8 @@ The following features are extracted for each data sample:
 * schools_closed:
   - 1 if the schools are on holiday
   - 0 else
-* ramazan:
-  - 1 if the sample is in Ramazan
+* Monsoon season:
+  - 1 if the sample is in Monsoon season
   - 0 else
 * holiday:
   - 1 if the day of the sample is on holiday (national or religious)
